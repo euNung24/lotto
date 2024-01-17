@@ -132,7 +132,7 @@ const LottoGame = ({
 
   return (
     <div>
-      {isSubmitted && !cancel && numbers.length > 0 && (
+      {isSubmitted && !cancel && (numbers.length > 0 || autoSelect) && (
         <div>{rank ? `${rank}등 당첨` : "낙첨"}</div>
       )}
       <LottoGameWrapper>

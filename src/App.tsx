@@ -100,12 +100,14 @@ function App() {
       if (cancelStatus[i]) {
         allGameNumList[i] = [];
       } else if (autoSelectStatus[i]) {
-        while (allGameNumList[i].length <= 6) {
+        const tempNums = [...allGameNumList[i]];
+        while (tempNums.length <= 6) {
           const num = Math.trunc(Math.random() * 45 + 1);
-          if (!allGameNumList[i].includes(num)) {
-            allGameNumList[i].push(num);
+          if (!tempNums.includes(num)) {
+            tempNums.push(num);
           }
         }
+        allGameNumList[i] = tempNums;
       }
     }
     if (
