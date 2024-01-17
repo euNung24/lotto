@@ -22,7 +22,7 @@ const Title = styled.h2`
   text-align: center;
 `;
 
-const SubmitButton = styled.button`
+const Button = styled.button`
   background-color: #abcdef;
   border: 1px solid #4a7da6;
   border-radius: 5px;
@@ -110,6 +110,14 @@ function App() {
     copiedCancelStatus[idx] = !copiedCancelStatus[idx];
     setCancelStatus(copiedCancelStatus);
   };
+
+  const onClickReset = () => {
+    setIsSubmit(false);
+    setGameNumList(initGameNumList);
+    setAutoSelectStatus(initAutoSelectStatus);
+    setCancelStatus(initCancelStatus);
+  };
+
   return (
     <StyledMain>
       <section>
@@ -119,7 +127,11 @@ function App() {
           }}
         >
           <Title>로또 추첨</Title>
-          <SubmitButton onClick={onClickSubmit}>제출</SubmitButton>
+          {!isSubmit ? (
+            <Button onClick={onClickSubmit}>제출</Button>
+          ) : (
+            <Button onClick={onClickReset}>다시하기</Button>
+          )}
         </div>
         <LottoGameWrapper>
           {["A", "B", "C", "D", "E"].map((name, idx) => (

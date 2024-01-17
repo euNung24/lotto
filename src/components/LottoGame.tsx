@@ -95,32 +95,44 @@ const LottoGame = ({
   winningNumbers,
 }: LottoGameProps) => {
   const rank = getRank(numbers, winningNumbers);
-  const getPossibleNum = (num: number) => {
+  const getIsChangePossible = (num: number) => {
+    if (isSubmitted) {
+      alert("이미 제출된 로또입니다.");
+      return;
+    }
     if (numbers.includes(num)) {
       changeGameNumList([...numbers].filter((item) => item !== num));
-      return false;
+      return;
     }
     if (numbers.length >= 6) {
       alert("로또 번호는 6개까지만 선택 가능합니다.");
-      return false;
+      return;
     }
     changeGameNumList([...numbers, num]);
-    return true;
+    return;
   };
 
   const getAutoSelectStatus = () => {
+    if (isSubmitted) {
+      alert("이미 제출된 로또입니다.");
+      return;
+    }
     changeAutoSelectStatus();
     return !autoSelect;
   };
 
   const getCancelStatus = () => {
+    if (isSubmitted) {
+      alert("이미 제출된 로또입니다.");
+      return;
+    }
     changeCancelStatus();
     return !cancel;
   };
 
   return (
     <div>
-      {isSubmitted && numbers.length > 0 && (
+      {isSubmitted && !cancel && numbers.length > 0 && (
         <div>{rank ? `${rank}등 당첨` : "낙첨"}</div>
       )}
       <LottoGameWrapper>
@@ -135,16 +147,22 @@ const LottoGame = ({
               <NumBox
                 key={i + 1}
                 num={i + 1}
-                getIsPossibleNum={() => getPossibleNum(i + 1)}
+                isSelected={numbers.includes(i + 1)}
+                getIsChangePossible={() => getIsChangePossible(i + 1)}
               />
             ))}
         </NumBoxWrapper>
         <SubmitTypeWrapper>
           <div>
-            자동선택 <NumBox getIsPossibleNum={getAutoSelectStatus} />
+            자동선택
+            <NumBox
+              isSelected={autoSelect}
+              getIsChangePossible={getAutoSelectStatus}
+            />
           </div>
           <div>
-            취소 <NumBox getIsPossibleNum={getCancelStatus} />
+            취소
+            <NumBox isSelected={cancel} getIsChangePossible={getCancelStatus} />
           </div>
         </SubmitTypeWrapper>
       </LottoGameWrapper>

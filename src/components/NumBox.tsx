@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 
 type NumBoxProps = {
   num?: number;
-  getIsPossibleNum?: () => boolean;
+  getIsChangePossible?: () => void;
+  isSelected: boolean;
 };
 
 const StyledNumBox = styled.div<{ num: number; isClicked: boolean }>`
@@ -39,14 +40,17 @@ const StyledNumBox = styled.div<{ num: number; isClicked: boolean }>`
     transform: translate(-50%, -50%);
   }
 `;
-const NumBox = ({ num = 0, getIsPossibleNum = () => false }: NumBoxProps) => {
-  const [isClicked, setIsClicked] = useState(false);
-  const onClick = () => {
-    setIsClicked(getIsPossibleNum());
-  };
-
+const NumBox = ({
+  num = 0,
+  isSelected,
+  getIsChangePossible = () => {},
+}: NumBoxProps) => {
   return (
-    <StyledNumBox num={num} isClicked={isClicked} onClick={onClick}>
+    <StyledNumBox
+      num={num}
+      isClicked={isSelected}
+      onClick={getIsChangePossible}
+    >
       {num}
     </StyledNumBox>
   );
