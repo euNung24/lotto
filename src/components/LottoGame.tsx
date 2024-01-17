@@ -88,6 +88,10 @@ const LottoGame = ({
 }: LottoGameProps) => {
   const rank = getRank(numbers, winningNumbers);
   const getPossibleNum = (num: number) => {
+    if (numbers.includes(num)) {
+      changeGameNumList([...numbers].filter((item) => item !== num));
+      return false;
+    }
     if (numbers.length >= 6) {
       alert("로또 번호는 6개까지만 선택 가능합니다.");
       return false;
@@ -113,7 +117,7 @@ const LottoGame = ({
               <NumBox
                 key={i + 1}
                 num={i + 1}
-                getPossibleNum={() => getPossibleNum(i + 1)}
+                getIsPossibleNum={() => getPossibleNum(i + 1)}
               />
             ))}
         </NumBoxWrapper>

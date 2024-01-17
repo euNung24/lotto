@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 
 type NumBoxProps = {
   num?: number;
-  getPossibleNum?: () => void | boolean;
+  getIsPossibleNum?: () => boolean;
 };
 
 const StyledNumBox = styled.div<{ num: number; isClicked: boolean }>`
@@ -39,12 +39,10 @@ const StyledNumBox = styled.div<{ num: number; isClicked: boolean }>`
     transform: translate(-50%, -50%);
   }
 `;
-const NumBox = ({ num = 0, getPossibleNum = () => {} }: NumBoxProps) => {
+const NumBox = ({ num = 0, getIsPossibleNum = () => false }: NumBoxProps) => {
   const [isClicked, setIsClicked] = useState(false);
   const onClick = () => {
-    if (getPossibleNum()) {
-      setIsClicked((prev) => !prev);
-    }
+    setIsClicked(getIsPossibleNum());
   };
 
   return (
