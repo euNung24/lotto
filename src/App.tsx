@@ -41,46 +41,74 @@ const WinningBallWrapper = styled.div`
   gap: 12px;
 `;
 
+const genWinningNumbers = () => {
+  const numbers: number[] = [];
+  while (numbers.length <= 6) {
+    const num = Math.trunc(Math.random() * 45 + 1);
+    if (!numbers.includes(num)) {
+      numbers.push(num);
+    }
+  }
+  return numbers;
+};
+
+const initGameNumList = [[], [], [], [], [], [], []];
+const initAutoSelectStatus = [false, false, false, false, false, false];
+const initCancelStatus = [false, false, false, false, false, false];
+
 function App() {
   const [isSubmit, setIsSubmit] = useState(false);
-  const [gameNumList, setGameNumList] = useState<number[][]>([
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-    [],
-  ]);
+  const [gameNumList, setGameNumList] = useState<number[][]>(initGameNumList);
   const [winningNumbers, setWinningNumbers] = useState<number[]>([]);
+  const [autoSelectStatus, setAutoSelectStatus] =
+    useState<boolean[]>(initAutoSelectStatus);
+  const [cancelStatus, setCancelStatus] = useState<boolean[]>(initCancelStatus);
 
   const onClickSubmit = () => {
-    if (window.confirm("제출하시겠습니까?")) {
-      if (
-        gameNumList.findIndex(
-          (numbers) => numbers.length > 0 && numbers.length < 6,
-        ) > -1
-      ) {
-        alert("입력한 게임의 로또 번호를 모두 입력해주세요.");
-        return;
-      }
-      setIsSubmit(true);
+    const status = window.confirm("제출하시겠습니까?");
+    if (!status) return;
+    let allGameNumList = [...gameNumList];
 
-      const numbers: number[] = [];
-      while (numbers.length <= 6) {
-        const num = Math.trunc(Math.random() * 45 + 1);
-        if (!numbers.includes(num)) {
-          numbers.push(num);
+    for (let i = 0; i < gameNumList.length; i++) {
+      if (cancelStatus[i]) {
+        allGameNumList[i] = [];
+      } else if (autoSelectStatus[i]) {
+        while (allGameNumList[i].length <= 6) {
+          const num = Math.trunc(Math.random() * 45 + 1);
+          if (!allGameNumList[i].includes(num)) {
+            allGameNumList[i].push(num);
+          }
         }
       }
-      setWinningNumbers(numbers);
     }
+    if (
+      allGameNumList.findIndex(
+        (numbers) => numbers.length > 0 && numbers.length < 6,
+      ) > -1
+    ) {
+      alert("입력한 게임의 로또 번호를 모두 입력해주세요.");
+      return;
+    }
+    setIsSubmit(true);
+
+    setWinningNumbers(genWinningNumbers());
   };
 
   const changeGameNumList = (idx: number, numbers: number[]) => {
     let copiedGameNumList = [...gameNumList];
     copiedGameNumList[idx] = [...numbers];
     setGameNumList(copiedGameNumList);
+  };
+
+  const changeAutoSelectStatus = (idx: number) => {
+    let copiedAutoSelectStatus = [...autoSelectStatus];
+    copiedAutoSelectStatus[idx] = !copiedAutoSelectStatus[idx];
+    setAutoSelectStatus(copiedAutoSelectStatus);
+  };
+  const changeCancelStatus = (idx: number) => {
+    let copiedCancelStatus = [...cancelStatus];
+    copiedCancelStatus[idx] = !copiedCancelStatus[idx];
+    setCancelStatus(copiedCancelStatus);
   };
   return (
     <StyledMain>
@@ -99,6 +127,14 @@ function App() {
               key={name}
               name={name}
               numbers={gameNumList[idx]}
+              autoSelect={autoSelectStatus[idx]}
+              cancel={cancelStatus[idx]}
+              changeAutoSelectStatus={() => {
+                changeAutoSelectStatus(idx);
+              }}
+              changeCancelStatus={() => {
+                changeCancelStatus(idx);
+              }}
               changeGameNumList={(numbers: number[]) =>
                 changeGameNumList(idx, numbers)
               }

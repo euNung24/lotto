@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "@emotion/styled";
 import NumBox from "./NumBox";
 
@@ -51,10 +51,14 @@ const SubmitTypeWrapper = styled.div`
 
 type LottoGameProps = {
   name: string;
+  autoSelect: boolean;
+  cancel: boolean;
   isSubmitted: boolean;
   winningNumbers: number[];
   numbers: number[];
   changeGameNumList: (numbers: number[]) => void;
+  changeAutoSelectStatus: () => void;
+  changeCancelStatus: () => void;
 };
 
 const getRank = (selectedNumbers: number[], winningNumbers: number[]) => {
@@ -82,6 +86,10 @@ const getRank = (selectedNumbers: number[], winningNumbers: number[]) => {
 const LottoGame = ({
   name,
   numbers,
+  autoSelect,
+  cancel,
+  changeAutoSelectStatus,
+  changeCancelStatus,
   changeGameNumList,
   isSubmitted,
   winningNumbers,
@@ -98,6 +106,16 @@ const LottoGame = ({
     }
     changeGameNumList([...numbers, num]);
     return true;
+  };
+
+  const getAutoSelectStatus = () => {
+    changeAutoSelectStatus();
+    return !autoSelect;
+  };
+
+  const getCancelStatus = () => {
+    changeCancelStatus();
+    return !cancel;
   };
 
   return (
@@ -123,10 +141,10 @@ const LottoGame = ({
         </NumBoxWrapper>
         <SubmitTypeWrapper>
           <div>
-            자동선택 <NumBox />
+            자동선택 <NumBox getIsPossibleNum={getAutoSelectStatus} />
           </div>
           <div>
-            취소 <NumBox />
+            취소 <NumBox getIsPossibleNum={getCancelStatus} />
           </div>
         </SubmitTypeWrapper>
       </LottoGameWrapper>
