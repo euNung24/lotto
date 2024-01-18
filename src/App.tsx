@@ -4,9 +4,11 @@ import styled from "@emotion/styled";
 import LottoBall from "./components/LottoBall";
 
 const StyledMain = styled.main`
-  margin-top: 20px;
+  margin: 20px auto;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  max-width: 1300px;
 `;
 const LottoGameWrapper = styled.div`
   margin-top: 20px;
@@ -14,10 +16,6 @@ const LottoGameWrapper = styled.div`
   justify-content: center;
   flex-wrap: wrap;
   gap: 12px;
-
-  & > * {
-    flex: 1;
-  }
 `;
 
 const Title = styled.h2`
@@ -189,7 +187,11 @@ function App() {
         </LottoGameWrapper>
       </section>
       {isSubmit && (
-        <section>
+        <section
+          style={{
+            alignSelf: "flex-start",
+          }}
+        >
           <h3>로또 당첨 번호</h3>
           <WinningBallWrapper>
             {winningNumbers.map((num, idx) => {
