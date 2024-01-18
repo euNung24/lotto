@@ -4,6 +4,7 @@ import NumBox from "./NumBox";
 
 const LottoGameWrapper = styled.div`
   border: 1px solid var(--primary);
+  max-width: 310px;
 `;
 
 const Title = styled.h4`
@@ -131,7 +132,12 @@ const LottoGame = ({
   };
 
   return (
-    <div>
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+      }}
+    >
       {isSubmitted && !cancel && (numbers.length > 0 || autoSelect) && (
         <div>{rank ? `${rank}등 당첨` : "낙첨"}</div>
       )}

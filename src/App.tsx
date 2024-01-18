@@ -4,13 +4,15 @@ import styled from "@emotion/styled";
 import LottoBall from "./components/LottoBall";
 
 const StyledMain = styled.main`
-  margin: 20px auto;
-  max-width: 1280px;
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
 `;
 const LottoGameWrapper = styled.div`
   margin-top: 20px;
   display: flex;
   justify-content: center;
+  flex-wrap: wrap;
   gap: 12px;
 
   & > * {
@@ -31,6 +33,7 @@ const Button = styled.button`
   cursor: pointer;
 
   &:hover {
+    color: #fff;
     background-color: #4a7da6;
     border: 1px solid #abcdef;
   }
